@@ -195,7 +195,7 @@ def calculate_intercluster_MIN(cluster_1, cluster_2):
         for point_2 in cluster_2:
             distances.append(calculate_manhattan(point_1, point_2))
 
-    return min(distances)
+    return min(distances), max(distances)
 
 #Function to print out the cluster analysis
 def output_results(clusters):
@@ -226,11 +226,12 @@ def output_results(clusters):
     results += "\nSum of Intra-Cluster Distances:\n"+str(round(sum(distances), 2))+"\n"
     
     #Generating inter-cluster distances
-    results += "\nInter-Cluster Distances:\n"
+    results += "\nInter-Cluster Distances(Min):\n"
     for index_1 in range(len(clusters)-1):
         for index_2 in range(index_1+1,len(clusters)):
-            distance = calculate_intercluster_MIN(clusters[index_1], clusters[index_2])
-            results += "Distance between Clusters "+str(index_1+1)+" and "+str(index_2+1)+" : "+str(distance)+"\n"
+            distance1, distance2 = calculate_intercluster_MIN(clusters[index_1], clusters[index_2])
+            results += "Distance between Clusters "+str(index_1+1)+" and "+str(index_2+1)+"(Min): "+str(distance1)+"\n"
+            results += "Distance between Clusters "+str(index_1+1)+" and "+str(index_2+1)+"(Max): "+str(distance2)+"\n"
 
     print(results)
     
