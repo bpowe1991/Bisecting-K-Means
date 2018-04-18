@@ -1,6 +1,8 @@
 
 
 
+
+
 import random
 import math
 import matplotlib.pyplot as pl
@@ -22,24 +24,20 @@ def generate_points(seed):
     
     return points
 
-#Function to calculate Euclidean distance
-def calculate_euclidean(centroid, point):
-    distance = round(math.sqrt(((centroid[0]-point[0])**2)+((centroid[1]-point[1])**2)), 2)
-    return distance
-
-
+#Function to calcualte Manhattan distance
+def calculate_manhattan(centroid, point):
     distance = round(abs(centroid[0]-point[0]) + abs(centroid[1]-point[1]), 2)
     return distance
 
-#Function to calculate all Euclidean distances in a cluster
-def calculate_distances_euclidean(centroid, points):
-    euclidean_distances = []
+#Function to calculate all Manhattan distances in a cluster
+def calculate_distances_manhattan(centroid, points):
+    manhattan_distances = []
  
-    #Finding each distance
+    #Finding all distances
     for point in points:
-        euclidean_distances.append(calculate_euclidean(centroid, point))
+        manhattan_distances.append(calculate_manhattan(centroid, point))
 
-    return euclidean_distances
+    return manhattan_distances
 
 #Function to find the centroid based on mean of distances
 def calculate_centroid(points):
@@ -64,7 +62,7 @@ def calculate_centroid(points):
 def calculate_SSE(points):
     centroid = calculate_centroid(points)
     SSE = 0
-    distances = calculate_distances_euclidean(centroid, points)
+    distances = calculate_distances_manhattan(centroid, points)
 
     #Summing the squares of distances
     for distance in distances:
@@ -79,7 +77,7 @@ def select_centroids(points):
     centroid = random.choice(points)
     points.remove(centroid)
 
-    distances = calculate_distances_euclidean(centroid, points)
+    distances = calculate_distances_manhattan(centroid, points)
     
     #Set the second centroid as the furtherest point from first centroid
     second_centroid = points[distances.index(max(distances))]
@@ -94,7 +92,7 @@ def create_clusters(centroids, points):
 
     #Organizing points based on proximity to either centroid 
     for point in points:
-        if calculate_euclidean(centroids[0], point) <= calculate_euclidean(centroids[1], point):
+        if calculate_manhattan(centroids[0], point) <= calculate_manhattan(centroids[1], point):
             cluster_1.append(point)
         else:
             cluster_2.append(point)
@@ -174,7 +172,7 @@ def calculate_intracluster(clusters):
 
     for cluster in clusters:
         centroid = calculate_centroid(cluster)
-        distances = calculate_distances_euclidean(centroid, cluster)
+        distances = calculate_distances_manhattan(centroid, cluster)
         for distance in distances:
             total_distance += distance
         intracluster_distances.append(round((total_distance/len(cluster)), 2))
@@ -189,7 +187,7 @@ def calculate_intercluster_MIN(cluster_1, cluster_2):
     #Finding the distances between every point between the culsters
     for point_1 in cluster_1:
         for point_2 in cluster_2:
-            distances.append(calculate_euclidean(point_1, point_2))
+            distances.append(calculate_manhattan(point_1, point_2))
 
     return min(distances)
 
@@ -262,6 +260,3 @@ bisecting_k_means(point_list, k)
 
 k = 4
 bisecting_k_means(point_list, k)
-
-
-
