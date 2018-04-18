@@ -1,7 +1,13 @@
+""""
+Programmer: Briton A. Powe              Program Homework Assignment #2
+Date: 4/18/18                           Class: Data Mining
+Filename: bisectingKMeansManhattan.py   Version: 1.7.3
+------------------------------------------------------------------------
+Program Description:
+Generates k number of clusters in a Manhattan space and outputs cluster analysis.
+**This Program uses Python 3.6.4***
 
-
-
-
+"""
 
 import random
 import math
